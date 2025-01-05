@@ -7,7 +7,7 @@
 sgu_data_to_wide(
   .data,
   .vars,
-  codes_path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2")
+  codes_path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse")
 )
 }
 \arguments{

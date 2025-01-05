@@ -6,7 +6,7 @@
 \usage{
 add_nrm_code(
   .data,
-  codes_path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2")
+  codes_path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse")
 )
 }
 \arguments{

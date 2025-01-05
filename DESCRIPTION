@@ -1,10 +1,12 @@
 Type: Package
 Package: MoCiS2.wtse
-Title: Tools for working with environmental white-tailed sea eagle data at NRM
+Title: Tools for working with environmental white-tailed sea eagle data at
+    NRM
 Version: 0.1.0
 Author: Peter Hellström
 Maintainer: Peter Hellström <peter.hellstrom@nrm.se>
-Description: Tools for working with environmental white-tailed sea eagle data at NRM
+Description: Tools for working with environmental white-tailed sea eagle
+    data at NRM
 License: MIT + file LICENSE
 Imports:
     DBI (>= 1.2.3),

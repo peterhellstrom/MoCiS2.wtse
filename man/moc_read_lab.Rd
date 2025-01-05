@@ -7,7 +7,7 @@
 moc_read_lab(
   path,
   negative_for_nondetect = TRUE,
-  codes_path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2"),
+  codes_path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"),
   has_provid = TRUE,
   na_values = c("-99.99", "N/A", "-99.9"),
   remove_na = TRUE,

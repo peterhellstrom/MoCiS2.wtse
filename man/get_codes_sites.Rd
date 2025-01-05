@@ -6,7 +6,7 @@
 \usage{
 get_codes_sites(
   .data = NULL,
-  path = system.file("extdata", "codelist.xlsx", package = "MoCiS2"),
+  path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"),
   sheet = "STATIONER",
   fuzzyjoin = TRUE,
   max_dist = 2

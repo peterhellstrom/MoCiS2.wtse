@@ -5,7 +5,7 @@
 \title{Title}
 \usage{
 get_codes_substances_methods(
-  path = system.file("extdata", "codelist.xlsx", package = "MoCiS2"),
+  path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"),
   sheet = "PARAMETRAR",
   columns = c("NRM_PARAMETERKOD", "LABB", "PROV_BERED", "PROVKARL", "ANALYS_MET",
     "UTFOR_LABB", "ANALYS_INSTR")

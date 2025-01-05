@@ -6,7 +6,7 @@
 \usage{
 moc_read_prc(
   prc_path,
-  codes_path = system.file("extdata", "codelist_prc.xls", package = "MoCiS2"),
+  codes_path = system.file("extdata", "codelist_prc.xls", package = "MoCiS2.wtse"),
   enc = "latin1"
 )
 }

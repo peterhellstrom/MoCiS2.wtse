@@ -8,7 +8,7 @@ moc_join_SGU(
   biodata,
   analysdata,
   add_bio_pars = TRUE,
-  codes_path = system.file("extdata", "codelist.xlsx", package = "MoCiS2")
+  codes_path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse")
 )
 }
 \arguments{

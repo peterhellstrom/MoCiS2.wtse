@@ -9,7 +9,7 @@ get_code_list(
     "inspire", "prc", "current"),
   exclude_sheets = c("version"),
   clean_names = FALSE,
-  current = "codelist.xlsx"
+  current = "codelist_wtse.xlsx"
 )
 }
 \arguments{

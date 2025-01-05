@@ -7,7 +7,7 @@
 export_to_template(
   .data,
   template_path = system.file("extdata", "miljogifter-leveransmall_2024.xlsx", package =
-    "MoCiS2"),
+    "MoCiS2.wtse"),
   export_path = "miljogifter-leveransmall-ifylld.xlsx",
   overwrite = FALSE,
   start_col = 2,

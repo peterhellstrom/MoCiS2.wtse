@@ -9,7 +9,7 @@ wtse_join_SGU(
   analysdata,
   has_pools = FALSE,
   add_bio_pars = TRUE,
-  codes_path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2"),
+  codes_path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"),
   measurement_cols = c("TOTV", "TOTL", "BRED", "FOSL", "FOSV", "SKTJ", "SKLV", "SKTJ",
     "SKVO", "SKLI", "UTTO"),
   remove_na_biodata = FALSE

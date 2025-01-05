@@ -9,7 +9,7 @@ moc_write_SGU(
   sheet,
   file = NULL,
   template_path = system.file("extdata", "miljogifter-leveransmall_2024.xlsx", package =
-    "MoCiS2"),
+    "MoCiS2.wtse"),
   program = "none",
   convert_to_character = TRUE
 )

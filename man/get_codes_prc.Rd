@@ -5,7 +5,7 @@
 \title{Title}
 \usage{
 get_codes_prc(
-  path = system.file("extdata", "codelist.xlsx", package = "MoCiS2"),
+  path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"),
   sheet = "PARAMETRAR",
   columns = c("NRM_PARAMETERKOD", "PROV_BERED", "PROVKARL", "ANALYS_MET", "ANALYS_INSTR")
 )
