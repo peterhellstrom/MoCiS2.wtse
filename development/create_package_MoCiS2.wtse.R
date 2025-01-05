@@ -6,8 +6,8 @@
 library(devtools)
 
 # Create project ----
-p <- "W:/projects/data/contaminants/MoCiS2.wtse"
-usethis::create_package(p, check_name = FALSE)
+# p <- "W:/projects/data/contaminants/MoCiS2.wtse"
+# usethis::create_package(p, check_name = FALSE)
 
 # License ----
 usethis::use_mit_license()
@@ -17,6 +17,7 @@ use_git_config(
   user.name = "peterhellstrom",
   user.email = "peter.hellstrom@nrm.se"
 )
+
 usethis::use_git()
 usethis::use_github()
 
