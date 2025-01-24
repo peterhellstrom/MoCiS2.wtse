@@ -1,5 +1,6 @@
 # remotes::install_github("ycphs/openxlsx")
 library(openxlsx)
+library(openxlsx2)
 
 # "PROBLEM" with long term release of openxlsx:
 # loadWorkbook() adds NA strings to empty cells!
@@ -22,3 +23,13 @@ args(loadWorkbook)
 # Note that default value of na.convert in development version
 # is TRUE, but FALSE in my version. If we use
 # development version on github, do not forget to set na.convert argument to FALSE.
+
+# Try to re-create the issue???? Can't remember how to...
+
+x <- loadWorkbook("development/loadWorkbook.xlsx", na.convert = TRUE)
+saveWorkbook(x, "development/t.xlsx", overwrite = TRUE)
+
+x2 <- openxlsx2::wb_load("development/loadWorkbook.xlsx")
+openxlsx2::wb_save(x2, "development/t2.xlsx")
+
+

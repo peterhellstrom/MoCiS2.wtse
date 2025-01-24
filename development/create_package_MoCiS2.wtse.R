@@ -2,7 +2,6 @@
 # devtools::install_github("r-lib/devtools")
 # devtools::install_github("r-lib/usethis")
 
-# can be added to .Rprofile startup file
 library(devtools)
 
 # Create project ----
@@ -92,7 +91,7 @@ usethis::use_tidy_description()
 install()
 
 ## Install from GitHub ----
-# install_github("peterhellstrom/swecoords")
+# install_github("peterhellstrom/MoCiS2.wtse")
 
 # Ignore ----
 usethis::use_build_ignore(

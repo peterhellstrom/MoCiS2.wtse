@@ -6,12 +6,11 @@
 \usage{
 add_nrm_code(
   .data,
-  codes_path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse")
+  codes_path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"),
+  join_by_instr = TRUE
 )
 }
 \arguments{
-\item{.data}{}
-
 \item{codes_path}{}
 }
 \description{

@@ -11,10 +11,6 @@ sgu_data_to_wide(
 )
 }
 \arguments{
-\item{.data}{}
-
-\item{.vars}{}
-
 \item{codes_path}{}
 }
 \description{
