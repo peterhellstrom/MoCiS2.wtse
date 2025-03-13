@@ -11,7 +11,8 @@ moc_write_SGU(
   template_path = system.file("extdata", "miljogifter-leveransmall_2024.xlsx", package =
     "MoCiS2.wtse"),
   program = "none",
-  convert_to_character = TRUE
+  convert_to_character = TRUE,
+  ...
 )
 }
 \arguments{

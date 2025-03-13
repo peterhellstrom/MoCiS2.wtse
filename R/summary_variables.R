@@ -11,7 +11,7 @@
 add_clc_sums_capillary <- function(
     .data,
     .bound = "medium",
-    .add_PCBSUM = TRUE
+    .add_PCBTOT = TRUE
 ) {
   out <- .data |> 
     dplyr::mutate(
@@ -20,10 +20,10 @@ add_clc_sums_capillary <- function(
       PCB7SUM = add_sum_contaminants(matches("^CB"), .bound = .bound),
       DDTKSUM_PCB7SUM = DDTKSUM / PCB7SUM
     )
-  if (.add_PCBSUM) {
+  if (.add_PCBTOT) {
     out <- out |> 
       mutate(
-        PCBSUM = dplyr::case_when(
+        PCBTOT = dplyr::case_when(
           stringr::str_detect(PROVPLATS_ANALYSMALL, "^Q") ~ `CB-138` * 9.06,
           TRUE ~ `CB-138` * 8.22
         ),
@@ -80,7 +80,7 @@ add_bfr_sums_capillary <- function(
 add_clc_bfr_sums_capillary <- function(
     .data,
     .bound = "medium",
-    .add_PCBSUM = TRUE
+    .add_PCBTOT = TRUE
 ) {
   out <- .data |> 
     dplyr::mutate(
@@ -89,10 +89,10 @@ add_clc_bfr_sums_capillary <- function(
       PCB7SUM = add_sum_contaminants(matches("^CB"), .bound = .bound),
       DDTKSUM_PCB7SUM = DDTKSUM / PCB7SUM
     )
-  if (.add_PCBSUM) {
+  if (.add_PCBTOT) {
     out <- out |> 
       mutate(
-        PCBSUM = dplyr::case_when(
+        PCBTOT = dplyr::case_when(
           stringr::str_detect(PROVPLATS_ANALYSMALL, "^Q") ~ `CB-138` * 9.06,
           TRUE ~ `CB-138` * 8.22
         ),
@@ -159,7 +159,7 @@ import_clc_bfr_new_template <- function(
           TRUE ~ ANALYS_INSTR
         ),
         ACKREDITERAD_MET = dplyr::case_when(
-          is.na(ACKREDITERAD_MET) & stringr::str_detect(NRM_PARAMETERKOD, "SUM$") ~ ackr_sum,
+          is.na(ACKREDITERAD_MET) & stringr::str_detect(NRM_PARAMETERKOD, "SUM$|TOT$") ~ ackr_sum,
           TRUE ~ ACKREDITERAD_MET
         ),
         MATOSAKERHET_TYP = dplyr::if_else(

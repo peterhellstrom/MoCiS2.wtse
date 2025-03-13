@@ -4,7 +4,7 @@
 \alias{add_clc_sums_capillary}
 \title{Title}
 \usage{
-add_clc_sums_capillary(.data, .bound = "medium", .add_PCBSUM = TRUE)
+add_clc_sums_capillary(.data, .bound = "medium", .add_PCBTOT = TRUE)
 }
 \arguments{
 \item{.data}{}

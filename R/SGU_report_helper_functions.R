@@ -133,26 +133,26 @@ export_to_template <- function(
   
   if (base::file.exists(export_path)) {
     
-    wb <- openxlsx::loadWorkbook(
-      export_path, 
+    wb <- openxlsx2::wb_load(
+      file = export_path, 
       na.convert = FALSE
     )
     
     purrr::walk(
       names(.data),
-      \(x) openxlsx::writeData(
-        wb, 
-        x, 
-        .data[[x]],
-        startCol = start_col, 
-        startRow = start_row, 
-        colNames = col_names
+      \(x) openxlsx2::write_data(
+        wb = wb, 
+        sheet = x, 
+        x = .data[[x]],
+        start_col = start_col, 
+        start_row = start_row, 
+        col_names = col_names
       )
     )
     
-    openxlsx::saveWorkbook(
-      wb, 
-      export_path, 
+    openxlsx2::wb_save(
+      wb = wb, 
+      file = export_path, 
       overwrite = TRUE
     )
   }

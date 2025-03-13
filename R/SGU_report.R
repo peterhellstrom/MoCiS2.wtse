@@ -165,7 +165,8 @@ moc_write_SGU <- function(
     data, sheet, file = NULL, 
     template_path = system.file("extdata", "miljogifter-leveransmall_2024.xlsx", package = "MoCiS2.wtse"), 
     program = "none",
-    convert_to_character = TRUE
+    convert_to_character = TRUE,
+    ...
 ){
   
   # Avoid scientific notation
@@ -237,7 +238,7 @@ moc_write_SGU <- function(
   if (is.null(file)) {
     data
   } else {
-    openxlsx::write.xlsx(data, file = file)
+    openxlsx2::write_xlsx(data, file = file, ...)
   }
   
 }

@@ -111,6 +111,14 @@ create_LOQ_df <- function(
     )
 }
 
+#' Title
+#'
+#' @param .data 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 create_header_df <- function(.data) {
   .data |> 
     dplyr::select(
@@ -134,6 +142,14 @@ create_header_df <- function(.data) {
 # 2) Filter for substances only occurring in input data
 # 3) (Optionally) allow for different output depending on another
 #    variable, like time/year (before/after accreditation).
+#' Title
+#'
+#' @param .data 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 create_ackr_df <- function(.data) {
   .data |> 
     dplyr::select(
