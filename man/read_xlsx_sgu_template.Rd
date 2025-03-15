@@ -16,14 +16,6 @@ read_xlsx_sgu_template(
 )
 }
 \arguments{
-\item{path}{}
-
-\item{sheet}{}
-
-\item{ul_data}{}
-
-\item{ul_names}{}
-
 \item{lr_names}{}
 }
 \description{

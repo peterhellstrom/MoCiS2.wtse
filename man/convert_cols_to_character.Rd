@@ -7,10 +7,6 @@
 convert_cols_to_character(.data, round_numeric = TRUE, digits = 5)
 }
 \arguments{
-\item{.data}{}
-
-\item{round_numeric}{}
-
 \item{digits}{}
 }
 \description{

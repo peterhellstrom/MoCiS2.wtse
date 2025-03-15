@@ -1,18 +1,18 @@
 #' Title
 #'
-#' @param .data 
-#' @param round_numeric 
-#' @param digits 
+#' @param .data
+#' @param round_numeric
+#' @param digits
 #'
 #' @return
 #' @export
 #'
 #' @examples
 convert_cols_to_character <- function(.data, round_numeric = TRUE, digits = 5) {
-  
+
   if (round_numeric) {
-    .data <- 
-      .data |> 
+    .data <-
+      .data |>
       dplyr::mutate(
         dplyr::across(
           tidyselect::where(is.numeric),
@@ -20,8 +20,8 @@ convert_cols_to_character <- function(.data, round_numeric = TRUE, digits = 5) {
         )
       )
   }
-  
-  .data |> 
+
+  .data |>
     dplyr::mutate(
       dplyr::across(
         tidyselect::where(is.numeric),
@@ -30,7 +30,7 @@ convert_cols_to_character <- function(.data, round_numeric = TRUE, digits = 5) {
           stringr::str_replace("[.]", ",")
       ),
       dplyr::across(
-        tidyselect::everything(), 
+        tidyselect::everything(),
         as.character
       )
     )
@@ -39,38 +39,38 @@ convert_cols_to_character <- function(.data, round_numeric = TRUE, digits = 5) {
 
 #' Title
 #'
-#' @param .data 
-#' @param .template 
-#' @param .select_template_columns 
+#' @param .data
+#' @param .template
+#' @param .select_template_columns
 #'
 #' @return
 #' @export
 #'
 #' @examples
 add_missing_columns <- function(
-    .data, .template, 
+    .data, .template,
     .select_template_columns = TRUE
 ) {
-  
+
   not_available <- setdiff(
-    names(.template), 
+    names(.template),
     names(.data)
   )
-  
+
   if (length(not_available) > 0)
     message(
       paste0(
-        "Unavailable columns in data: ", 
+        "Unavailable columns in data: ",
         paste(not_available, collapse = ", ")
       )
     )
-  
+
   # Add missing columns filled with NA
   # (data type becomes logical)
   .data[not_available] <- NA
-  
+
   if (.select_template_columns) {
-    .data <- .data |> 
+    .data <- .data |>
       dplyr::select(
         tidyselect::all_of(names(.template))
       )
@@ -83,30 +83,30 @@ add_missing_columns <- function(
 #   y = c(1:5),
 #   z = c("A", "b", "c", "D", "f")
 # )
-# 
+#
 # y <- tibble::tibble(
 #   b = c(4, 2),
 #   x = c(3, 3)
 # )
-# 
+#
 # convert_cols_to_character(x)
 # convert_cols_to_character(x, round = FALSE)
-# 
+#
 # add_missing_columns(y, x)
 # add_missing_columns(y, x, .select_template_columns = FALSE)
-# x |> 
+# x |>
 #   add_missing_columns(y) |>
 #   convert_cols_to_character()
 
 #' Title
 #'
-#' @param .data 
-#' @param template_path 
-#' @param export_path 
-#' @param overwrite 
-#' @param start_col 
-#' @param start_row 
-#' @param col_names 
+#' @param .data
+#' @param template_path
+#' @param export_path
+#' @param overwrite
+#' @param start_col
+#' @param start_row
+#' @param col_names
 #'
 #' @return
 #' @export
@@ -114,45 +114,50 @@ add_missing_columns <- function(
 #' @examples
 export_to_template <- function(
     .data,
-    template_path = system.file("extdata", "miljogifter-leveransmall_2024.xlsx", package = "MoCiS2.wtse"),
+    template_path = system.file(
+      "extdata",
+      "miljogifter-leveransmall_2024.xlsx",
+      package = "MoCiS2.wtse"
+    ),
     export_path = "miljogifter-leveransmall-ifylld.xlsx",
     overwrite = FALSE,
     start_col = 2,
     start_row = 6,
     col_names = FALSE
-    
+
 ) {
-  
+
+  # Copy empty template (from package installation) file to export directory
   base::file.copy(
-    template_path,
-    export_path,
-    overwrite,
+    from = template_path,
+    to = export_path,
+    overwrite = overwrite,
     copy.mode = TRUE,
     copy.date = TRUE
   )
-  
+
   if (base::file.exists(export_path)) {
-    
+
+    # Connect to workbook
     wb <- openxlsx2::wb_load(
-      file = export_path, 
-      na.convert = FALSE
+      file = export_path
     )
-    
+
     purrr::walk(
       names(.data),
-      \(x) openxlsx2::write_data(
-        wb = wb, 
-        sheet = x, 
+      \(x) wb$add_data(
+        sheet = x,
         x = .data[[x]],
-        start_col = start_col, 
-        start_row = start_row, 
-        col_names = col_names
+        start_col = start_col,
+        start_row = start_row,
+        col_names = col_names,
+        na.strings = NULL
       )
     )
-    
+
     openxlsx2::wb_save(
-      wb = wb, 
-      file = export_path, 
+      wb = wb,
+      file = export_path,
       overwrite = TRUE
     )
   }
@@ -160,58 +165,58 @@ export_to_template <- function(
 
 #' Title
 #'
-#' @param path 
-#' @param sheet 
-#' @param ul_data 
-#' @param ul_names 
-#' @param lr_names 
+#' @param path
+#' @param sheet
+#' @param ul_data
+#' @param ul_names
+#' @param lr_names
 #'
 #' @return
 #' @export
 #'
 #' @examples
 read_xlsx_sgu_template <- function(
-    path, 
+    path,
     sheet,
     ul_data = c(6, 2),
-    ul_names = c(1, 2), 
+    ul_names = c(1, 2),
     lr_names = c(1, NA),
     offset = 1,
     col_types = sgu_template_col_types(sheet),
     ...
 ) {
-  
+
   # skip columns 1, rows 2:5
   col_names <- readxl::read_xlsx(
-    path, 
+    path,
     range = cellranger::cell_limits(
       ul = ul_names, lr = lr_names, sheet = sheet
     )
-  ) |> 
+  ) |>
     names()
-  
+
   x <- readxl::read_xlsx(
-    path, 
+    path,
     range = cellranger::cell_limits(
-      ul = ul_data, 
-      lr = c(NA, length(col_names) + offset), 
+      ul = ul_data,
+      lr = c(NA, length(col_names) + offset),
       sheet = sheet
     ),
     col_names = col_names,
     col_types = col_types,
     ...
   )
-  
-  x |> 
+
+  x |>
     dplyr::mutate(
       dplyr::across(tidyselect::where(is.POSIXct), \(x) as.Date(x))
     )
-  
+
 }
 
 #' Title
 #'
-#' @param .sheet 
+#' @param .sheet
 #'
 #' @return
 #' @export

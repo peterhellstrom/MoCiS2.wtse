@@ -7,10 +7,6 @@
 add_missing_columns(.data, .template, .select_template_columns = TRUE)
 }
 \arguments{
-\item{.data}{}
-
-\item{.template}{}
-
 \item{.select_template_columns}{}
 }
 \description{
