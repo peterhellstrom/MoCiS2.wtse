@@ -163,7 +163,7 @@ moc_join_SGU <- function(
 #' @examples
 moc_write_SGU <- function(
     data, sheet, file = NULL, 
-    template_path = system.file("extdata", "miljogifter-leveransmall_2024.xlsx", package = "MoCiS2.wtse"), 
+    template_path = system.file("extdata", "miljogifter_leveransmall.xlsx", package = "MoCiS2.wtse"), 
     program = "none",
     convert_to_character = TRUE,
     ...

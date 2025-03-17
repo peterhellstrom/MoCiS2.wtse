@@ -298,7 +298,11 @@ wtse_join_SGU <- function(
 wtse_format_SGU <- function(
     data, 
     sheet,
-    template_path = system.file("extdata", "miljogifter-leveransmall_2024.xlsx", package = "MoCiS2.wtse"),
+    template_path = system.file(
+      "extdata", 
+      "miljogifter_leveransmall.xlsx", 
+      package = "MoCiS2.wtse"
+    ),
     convert_to_character = TRUE,
     round_numeric = TRUE,
     digits = 5

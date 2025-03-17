@@ -116,10 +116,10 @@ export_to_template <- function(
     .data,
     template_path = system.file(
       "extdata",
-      "miljogifter-leveransmall_2024.xlsx",
+      "miljogifter_leveransmall.xlsx",
       package = "MoCiS2.wtse"
     ),
-    export_path = "miljogifter-leveransmall-ifylld.xlsx",
+    export_path = "miljogifter_leveransmall_ifylld.xlsx",
     overwrite = FALSE,
     start_col = 2,
     start_row = 6,

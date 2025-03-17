@@ -8,7 +8,7 @@ moc_write_SGU(
   data,
   sheet,
   file = NULL,
-  template_path = system.file("extdata", "miljogifter-leveransmall_2024.xlsx", package =
+  template_path = system.file("extdata", "miljogifter_leveransmall.xlsx", package =
     "MoCiS2.wtse"),
   program = "none",
   convert_to_character = TRUE,

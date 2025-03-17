@@ -69,9 +69,6 @@ usethis::use_package("tibble", min_version = TRUE)
 usethis::use_package("tidyr", min_version = TRUE)
 usethis::use_package("tidyselect", min_version = TRUE)
 
-# Important: Must use development version of openxlsx
-# usethis::use_dev_package("openxlsx", remote = "github::ycphs/openxlsx")
-
 # Suggests ----
 usethis::use_package("ggplot2", "Suggests")
 usethis::use_package("knitr", "Suggests")

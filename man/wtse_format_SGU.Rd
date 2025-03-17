@@ -7,7 +7,7 @@
 wtse_format_SGU(
   data,
   sheet,
-  template_path = system.file("extdata", "miljogifter-leveransmall_2024.xlsx", package =
+  template_path = system.file("extdata", "miljogifter_leveransmall.xlsx", package =
     "MoCiS2.wtse"),
   convert_to_character = TRUE,
   round_numeric = TRUE,
