@@ -13,12 +13,6 @@ import_clc_bfr_new_template(
 )
 }
 \arguments{
-\item{path}{}
-
-\item{summary_fn}{}
-
-\item{ackr_sum}{}
-
 \item{format}{}
 }
 \description{

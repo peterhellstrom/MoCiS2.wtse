@@ -7,10 +7,6 @@
 add_clc_bfr_sums_capillary(.data, .bound = "medium", .add_PCBTOT = TRUE)
 }
 \arguments{
-\item{.data}{}
-
-\item{.bound}{}
-
 \item{.add_PCBSUM}{}
 }
 \description{

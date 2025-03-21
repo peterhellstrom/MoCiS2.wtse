@@ -12,10 +12,6 @@ get_codes_substances_methods(
 )
 }
 \arguments{
-\item{path}{}
-
-\item{sheet}{}
-
 \item{columns}{}
 }
 \description{

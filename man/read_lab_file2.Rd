@@ -14,7 +14,7 @@ read_lab_file2(
 )
 }
 \arguments{
-\item{sheet}{}
+\item{pivot_longer}{}
 }
 \description{
 Title

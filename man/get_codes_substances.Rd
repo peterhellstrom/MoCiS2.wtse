@@ -12,8 +12,6 @@ get_codes_substances(
 )
 }
 \arguments{
-\item{path}{}
-
 \item{sheet}{}
 }
 \description{

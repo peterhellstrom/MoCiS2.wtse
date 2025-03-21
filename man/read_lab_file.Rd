@@ -14,7 +14,7 @@ read_lab_file(
 )
 }
 \arguments{
-\item{sheet}{}
+\item{pivot_longer}{}
 }
 \description{
 Reads the results sheet from a lab-protocol

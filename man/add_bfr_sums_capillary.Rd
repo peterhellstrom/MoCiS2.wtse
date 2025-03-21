@@ -7,8 +7,6 @@
 add_bfr_sums_capillary(.data, .bound = "medium")
 }
 \arguments{
-\item{.data}{}
-
 \item{.bound}{}
 }
 \description{

@@ -4,7 +4,7 @@
 #' @param round_numeric
 #' @param digits
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
@@ -43,7 +43,7 @@ convert_cols_to_character <- function(.data, round_numeric = TRUE, digits = 5) {
 #' @param .template
 #' @param .select_template_columns
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
@@ -108,7 +108,7 @@ add_missing_columns <- function(
 #' @param start_row
 #' @param col_names
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
@@ -171,7 +171,7 @@ export_to_template <- function(
 #' @param ul_names
 #' @param lr_names
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
@@ -218,7 +218,7 @@ read_xlsx_sgu_template <- function(
 #'
 #' @param .sheet
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples

@@ -2,7 +2,8 @@
 #'
 #' @param x
 #'
-#' @return
+#' @returns
+#' @export
 #'
 #' @examples
 mean_or_na <- function(x) {

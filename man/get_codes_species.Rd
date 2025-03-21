@@ -13,12 +13,6 @@ get_codes_species(
 )
 }
 \arguments{
-\item{.data}{}
-
-\item{path}{}
-
-\item{sheet}{}
-
 \item{max_dist}{}
 }
 \description{

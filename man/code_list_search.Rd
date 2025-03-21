@@ -7,8 +7,6 @@
 code_list_search(search_string, .data)
 }
 \arguments{
-\item{search_string}{}
-
 \item{.data}{}
 }
 \description{

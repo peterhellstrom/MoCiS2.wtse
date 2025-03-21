@@ -1,8 +1,8 @@
 #' Title
 #'
-#' @param obj 
+#' @param obj
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
@@ -28,9 +28,9 @@ extract_linmod_stats <- function(obj) {
 
 #' Title
 #'
-#' @param obj 
+#' @param obj
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
@@ -53,9 +53,9 @@ extract_smooth_stats <- function(obj) {
 
 #' Title
 #'
-#' @param obj 
+#' @param obj
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples

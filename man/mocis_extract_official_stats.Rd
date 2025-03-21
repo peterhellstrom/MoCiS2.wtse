@@ -7,14 +7,6 @@
 mocis_extract_official_stats(contaminants, sites, species, run_date, dir)
 }
 \arguments{
-\item{contaminants}{}
-
-\item{sites}{}
-
-\item{species}{}
-
-\item{run_date}{}
-
 \item{dir}{}
 }
 \description{

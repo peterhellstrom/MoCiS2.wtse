@@ -1,19 +1,19 @@
 #' Title
 #'
-#' @param path 
-#' @param sheet 
+#' @param path
+#' @param sheet
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
 get_codes_prc <- function(
-    path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"), 
+    path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"),
     sheet = "PARAMETRAR",
     columns = c("NRM_PARAMETERKOD", "PROV_BERED", "PROVKARL", "ANALYS_MET", "ANALYS_INSTR")
 ) {
-  readxl::read_excel(path, sheet) |> 
-    dplyr::select(tidyselect::all_of(columns)) |> 
+  readxl::read_excel(path, sheet) |>
+    dplyr::select(tidyselect::all_of(columns)) |>
     dplyr::filter(
       stringr::str_detect(NRM_PARAMETERKOD, "FPRC|TPRC")
     )
@@ -21,96 +21,96 @@ get_codes_prc <- function(
 
 #' Title
 #'
-#' @param path 
-#' @param sheet 
+#' @param path
+#' @param sheet
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
 get_codes_substances <- function(
-    path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"), 
+    path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"),
     sheet = "PARAMETRAR",
     columns = c(
-      "NRM_PARAMETERKOD", "PARAMETERNAMN", "UNIK_PARAMETERKOD", 
+      "NRM_PARAMETERKOD", "PARAMETERNAMN", "UNIK_PARAMETERKOD",
       "ENHET", "MATOSAKERHET_ENHET", "PROV_LAGR"
     )
 ) {
   if (is.null(columns)) {
     readxl::read_excel(path, sheet)
   } else {
-    readxl::read_excel(path, sheet) |> 
+    readxl::read_excel(path, sheet) |>
       dplyr::select(tidyselect::all_of(columns))
   }
 }
 
 #' Title
 #'
-#' @param path 
-#' @param sheet 
-#' @param columns 
+#' @param path
+#' @param sheet
+#' @param columns
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
 get_codes_substances_methods <- function(
-    path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"), 
+    path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"),
     sheet = "PARAMETRAR",
     columns = c(
-      "NRM_PARAMETERKOD", "LABB", "PROV_BERED", "PROVKARL", 
+      "NRM_PARAMETERKOD", "LABB", "PROV_BERED", "PROVKARL",
       "ANALYS_MET", "UTFOR_LABB", "ANALYS_INSTR"
     )
 ) {
-  readxl::read_excel(path, sheet) |> 
+  readxl::read_excel(path, sheet) |>
     dplyr::select(tidyselect::all_of(columns))
 }
 
 #' Title
 #'
-#' @param .data 
-#' @param path 
-#' @param sheet 
-#' @param max_dist 
+#' @param .data
+#' @param path
+#' @param sheet
+#' @param max_dist
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
 get_codes_sites <- function(
-    .data = NULL, 
-    path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"), 
-    sheet = "STATIONER", 
+    .data = NULL,
+    path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"),
+    sheet = "STATIONER",
     fuzzyjoin = TRUE,
     max_dist = 2
 ) {
-  
-  stations_list <- readxl::read_excel(path, sheet) |> 
-    dplyr::select(-tidyselect::contains("...")) |> 
+
+  stations_list <- readxl::read_excel(path, sheet) |>
+    dplyr::select(-tidyselect::contains("...")) |>
     dplyr::distinct()
-  
+
   if (is.null(.data)) {
     stations_list
   } else {
     if (fuzzyjoin) {
-      .data |> 
+      .data |>
         fuzzyjoin::stringdist_left_join(
           stations_list,
-          by = "PROVPLATS_ANALYSMALL", 
+          by = "PROVPLATS_ANALYSMALL",
           max_dist = max_dist,
           distance_col = "LOKDIST"
-        ) |> 
+        ) |>
         dplyr::select(
-          -PROVPLATS_ANALYSMALL.y, 
+          -PROVPLATS_ANALYSMALL.y,
           PROVPLATS_ANALYSMALL = PROVPLATS_ANALYSMALL.x
-        ) |> 
+        ) |>
         dplyr::distinct()
     } else{
-      .data |> 
+      .data |>
         dplyr::left_join(
           stations_list,
           dplyr::join_by("PROVPLATS_ANALYSMALL")
-        ) |> 
+        ) |>
         dplyr::mutate(
           LOKDIST = if_else(
             PROVPLATS_ANALYSMALL %in% stations_list$PROVPLATS_ANALYSMALL, 0, NA
@@ -122,53 +122,53 @@ get_codes_sites <- function(
 
 #' Title
 #'
-#' @param .data 
-#' @param path 
-#' @param sheet 
-#' @param max_dist 
+#' @param .data
+#' @param path
+#' @param sheet
+#' @param max_dist
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
 get_codes_species <- function(
-    .data = NULL, 
-    path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"), 
-    sheet = "ARTER", 
+    .data = NULL,
+    path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse"),
+    sheet = "ARTER",
     fuzzyjoin = TRUE,
     max_dist = 2
 ) {
-  
-  species_list <- readxl::read_excel(path, sheet) |> 
+
+  species_list <- readxl::read_excel(path, sheet) |>
     dplyr::select(
       -tidyselect::contains("...")
-    ) |> 
+    ) |>
     dplyr::distinct()
-  
+
   if (is.null(.data)) {
     species_list
   } else {
     # This function could be made more general
     # if we used input column as an argument
     if (fuzzyjoin) {
-      .data |> 
+      .data |>
         fuzzyjoin::stringdist_left_join(
           species_list,
-          by = "LATIN", 
+          by = "LATIN",
           max_dist = max_dist,
           distance_col = "ARTDIST"
-        ) |> 
+        ) |>
         dplyr::select(
-          -LATIN.y, 
+          -LATIN.y,
           LATIN = LATIN.x
-        ) |> 
+        ) |>
         dplyr::distinct()
     } else {
-      .data |> 
+      .data |>
         dplyr::left_join(
-          species_list, 
+          species_list,
           dplyr::join_by("LATIN")
-        ) |> 
+        ) |>
         dplyr::mutate(
           ARTDIST = if_else(
             LATIN %in% species_list$LATIN, 0, NA
@@ -180,12 +180,12 @@ get_codes_species <- function(
 
 #' Title
 #'
-#' @param list_name 
-#' @param exclude_sheets 
-#' @param clean_names 
-#' @param current 
+#' @param list_name
+#' @param exclude_sheets
+#' @param clean_names
+#' @param current
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
@@ -195,9 +195,9 @@ get_code_list <- function(
     clean_names = FALSE,
     current = "codelist_wtse.xlsx"
 ) {
-  
+
   list_name <- match.arg(list_name)
-  
+
   list_file <- dplyr::case_when(
     list_name == "kembiofys" ~ "kodlistor_pq_nv_KemBioFys_PARAMETERNAMN.xlsx",
     list_name == "provmetadata" ~ "kodlistor_pq_nv_PROVMETADATA.xlsx",
@@ -208,11 +208,11 @@ get_code_list <- function(
     list_name == "prc" ~ "codelist_prc.xlsx",
     list_name == "current" ~ current
   )
-  
+
   codes_path = system.file(
     "extdata", list_file, package = "MoCiS2.wtse"
   )
-  
+
   codes_sheets <- readxl::excel_sheets(codes_path)
   if (class(exclude_sheets)[[1]] == "character") {
     codes_sheets <- codes_sheets[!codes_sheets %in% exclude_sheets]
@@ -221,11 +221,11 @@ get_code_list <- function(
   } else {
     stop("Argument exclude_sheets must be character, integer or numeric.")
   }
-  
+
   out <- purrr::map(
-    codes_sheets |> rlang::set_names(), 
+    codes_sheets |> rlang::set_names(),
     \(x) {
-      readxl::read_excel(codes_path, x) |> 
+      readxl::read_excel(codes_path, x) |>
         dplyr::rename(
           tidyselect::any_of(
             c(
@@ -235,23 +235,23 @@ get_code_list <- function(
           )
         )
     }
-  ) |> 
+  ) |>
     purrr::list_rbind(names_to = "ID_Lista")
-  
+
   if(clean_names) {
     out <- out |> janitor::clean_names()
   }
-  
+
   out
 }
 
 #' Title
 #'
-#' @param list_name 
-#' @param clean_names 
-#' @param list_file 
+#' @param list_name
+#' @param clean_names
+#' @param list_file
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
@@ -260,25 +260,25 @@ get_code_list_rmdk <- function(
     clean_names = FALSE,
     list_file = "rmdk_kodlistor_lankar.xlsx"
 ) {
-  
+
   codes_path = system.file(
     "extdata", list_file, package = "MoCiS2.wtse"
   )
-  
+
   codelists <- readxl::read_excel(codes_path, "kodlistor")
-  
-  code_groups <- codelists |> 
-    dplyr::filter(Huvudgrupp == list_name) |> 
+
+  code_groups <- codelists |>
+    dplyr::filter(Huvudgrupp == list_name) |>
     mutate(
-      URL_csv = glue::glue("https://kodlistor.miljodatasamverkan.se/def/vocabulary/{Huvudgrupp}/{Grupp}/csv") |> 
-        as.character() |> 
+      URL_csv = glue::glue("https://kodlistor.miljodatasamverkan.se/def/vocabulary/{Huvudgrupp}/{Grupp}/csv") |>
+        as.character() |>
         set_names(Grupp)
     )
-  
+
   out <- purrr::map(
-    code_groups$URL_csv, 
+    code_groups$URL_csv,
     \(x) {
-      readr::read_csv(x, show_col_types = FALSE) |> 
+      readr::read_csv(x, show_col_types = FALSE) |>
         dplyr::rename(
           tidyselect::any_of(
             c(
@@ -288,14 +288,14 @@ get_code_list_rmdk <- function(
           )
         )
     }
-  ) |> 
+  ) |>
     purrr::list_rbind(names_to = "ID_Lista")
-  
+
   if(clean_names) {
-    out <- out |> 
+    out <- out |>
       janitor::clean_names()
   }
-  
+
   out
 }
 
@@ -307,18 +307,18 @@ get_code_list_rmdk <- function(
 
 #' Title
 #'
-#' @param search_string 
-#' @param .data 
+#' @param search_string
+#' @param .data
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
 code_list_search <- function(search_string, .data) {
-  .data |> 
+  .data |>
     dplyr::filter(
       dplyr::if_any(
-        tidyselect::everything(), 
+        tidyselect::everything(),
         \(x) stringr::str_detect(x, search_string)
       )
     )

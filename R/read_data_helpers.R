@@ -1,14 +1,14 @@
 #' Title
 #'
-#' @param data 
+#' @param data
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
 wtse_substance_group <- function(data) {
-  
-  data |> 
+
+  data |>
     dplyr::mutate(
       substance_group = dplyr::case_when(
         stringr::str_detect(NRM_PARAMETERKOD, "HCH$|^DD|LINDAN") ~ "Pesticides",
@@ -24,15 +24,15 @@ wtse_substance_group <- function(data) {
 
 #' Title
 #'
-#' @param data 
+#' @param data
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
 wtse_substance_group_sgu <- function(data) {
-  
-  data |> 
+
+  data |>
     dplyr::mutate(
       substance_group = dplyr::case_when(
         stringr::str_detect(PARAMETERNAMN, "HCH|^DD") ~ "Pesticides",
@@ -49,44 +49,44 @@ wtse_substance_group_sgu <- function(data) {
 # Used for CLC ITM template version 5 + BFR template!
 #' Title
 #'
-#' @param .data 
-#' @param .cols 
+#' @param .data
+#' @param .cols
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
 add_smnh_variable_names <- function(.data, .cols = everything()) {
-  
-  .data |> 
+
+  .data |>
     dplyr::rename_with(
       \(x) stringr::str_replace_all(
         x,
         c(
-          "pp\\-(.*)" = stringr::str_c("\\1","K"), 
-          "a-HCH" = "AHCH", 
-          "b-HCH" = "BHCH", 
-          "\\(|\\)|\\+" = "", 
+          "pp\\-(.*)" = stringr::str_c("\\1","K"),
+          "a-HCH" = "AHCH",
+          "b-HCH" = "BHCH",
+          "\\(|\\)|\\+" = "",
           "163" = "",
           "fat\\_percentage" = "FPRC"
         )
-      ), 
+      ),
       .cols = dplyr::any_of(.cols)
     )
 }
 
 #' Title
 #'
-#' @param .data 
+#' @param .data
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
 fix_bfr_cols <- function(.data) {
-  .data |> 
+  .data |>
     dplyr::rename_with(
-      \(x) stringr::str_remove(x, "\\s+") |> 
+      \(x) stringr::str_remove(x, "\\s+") |>
         stringr::str_replace_all(c(BDE = "BDE-")),
       tidyselect::starts_with("BDE")
     )
@@ -95,10 +95,10 @@ fix_bfr_cols <- function(.data) {
 # Import from "new" SMNH templates, simple version
 #' Title
 #'
-#' @param path 
-#' @param .has_provid 
+#' @param path
+#' @param .has_provid
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
@@ -107,8 +107,8 @@ read_lab_file_simple <- function(path, .has_provid = FALSE) {
     read_lab_file(path, .has_provid = .has_provid, pivot_longer = FALSE),
     read_lab_file_weight(path, .has_provid = .has_provid),
     dplyr::join_by(PROV_KOD_ORIGINAL)
-  ) |> 
-    dplyr::select(-DWEIGHT) |> 
-    dplyr::mutate(source = basename(path)) |> 
+  ) |>
+    dplyr::select(-DWEIGHT) |>
+    dplyr::mutate(source = basename(path)) |>
     dplyr::relocate(source)
 }

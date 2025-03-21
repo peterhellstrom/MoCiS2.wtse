@@ -3,28 +3,28 @@
 # Create an empty data frame for now...
 #' Title
 #'
-#' @param .data 
+#' @param .data
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
 create_LOD_df <- function(.data, .empty = TRUE) {
-  
-  out <- .data |> 
+
+  out <- .data |>
     dplyr::select(
-      PROV_KOD_ORIGINAL, 
+      PROV_KOD_ORIGINAL,
       PROV_KOD_LABB,
       NRM_PARAMETERKOD
     )
-  
+
   if (.empty) {
-    out <- out |> 
+    out <- out |>
       dplyr::mutate(
         DETEKTIONSGRANS_LOD = NA_real_
       )
   } else {
-    out <- out |> 
+    out <- out |>
       dplyr::mutate(
         # unit: ng.g-1.lv-1
         DETEKTIONSGRANS_LOD = case_when(
@@ -39,11 +39,11 @@ create_LOD_df <- function(.data, .empty = TRUE) {
         )
       )
   }
-  
-  out |> 
+
+  out |>
     dplyr::filter(
       stringr::str_detect(NRM_PARAMETERKOD, "FPRC|TPRC", negate = TRUE)
-    ) |> 
+    ) |>
     dplyr::mutate(
       DETEKTIONSGRANS_LOD = abs(DETEKTIONSGRANS_LOD)
     )
@@ -55,9 +55,9 @@ create_LOD_df <- function(.data, .empty = TRUE) {
 # Hint in older ITM templates: negative value is "< lowest standard dilution"
 #' Title
 #'
-#' @param .data 
+#' @param .data
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
@@ -67,29 +67,29 @@ create_LOQ_df <- function(
     remove_prc = TRUE,
     na_values = -99.99
 ) {
-  
-  .data <- .data |> 
+
+  .data <- .data |>
     dplyr::select(
-      PROV_KOD_ORIGINAL, 
+      PROV_KOD_ORIGINAL,
       PROV_KOD_LABB,
       NRM_PARAMETERKOD,
       MATVARDETAL
     )
-  
+
   if (negative_for_nondetect) {
-    .data <- .data |> 
+    .data <- .data |>
       dplyr::mutate(
         RAPPORTERINGSGRANS_LOQ = dplyr::case_when(
           MATVARDETAL %in% na_values ~ NA_real_,
           MATVARDETAL < 0 ~ MATVARDETAL,
           TRUE ~ NA_real_
         )
-      ) |> 
+      ) |>
       dplyr::mutate(
         RAPPORTERINGSGRANS_LOQ = abs(RAPPORTERINGSGRANS_LOQ)
       )
   } else {
-    .data <- .data |> 
+    .data <- .data |>
       dplyr::mutate(
         RAPPORTERINGSGRANS_LOQ = dplyr::case_when(
           MATVARDETAL %in% na_values ~ NA_real_,
@@ -97,15 +97,15 @@ create_LOQ_df <- function(
         )
       )
   }
-  
+
   if (remove_prc) {
-    .data <- .data |> 
+    .data <- .data |>
       dplyr::filter(
         stringr::str_detect(NRM_PARAMETERKOD, "FPRC|TPRC", negate = TRUE)
       )
   }
-  
-  .data |> 
+
+  .data |>
     dplyr::select(
       -MATVARDETAL
     )
@@ -113,25 +113,25 @@ create_LOQ_df <- function(
 
 #' Title
 #'
-#' @param .data 
+#' @param .data
 #'
 #' @returns
 #' @export
 #'
 #' @examples
 create_header_df <- function(.data) {
-  .data |> 
+  .data |>
     dplyr::select(
       source,
       LABB = analysed_at,
       PROV_BERED = method_code_for_clean_up,
       ANALYS_MET = method_code_for_analysis
-    ) |> 
+    ) |>
     dplyr::mutate(
       PROVKARL = NA_character_,
       UTFOR_LABB = "EJ_REL",
       ANALYS_INSTR = NA_character_
-    ) |> 
+    ) |>
     dplyr::select(
       source, LABB, PROV_BERED, PROVKARL, ANALYS_MET, UTFOR_LABB, ANALYS_INSTR
     )
@@ -144,18 +144,18 @@ create_header_df <- function(.data) {
 #    variable, like time/year (before/after accreditation).
 #' Title
 #'
-#' @param .data 
+#' @param .data
 #'
 #' @returns
 #' @export
 #'
 #' @examples
 create_ackr_df <- function(.data) {
-  .data |> 
+  .data |>
     dplyr::select(
       NRM_PARAMETERKOD
-    ) |> 
-    dplyr::distinct() |> 
+    ) |>
+    dplyr::distinct() |>
     dplyr::mutate(
       ACKREDITERAD_MET = dplyr::case_when(
         NRM_PARAMETERKOD == "FPRC" ~ "Nej",

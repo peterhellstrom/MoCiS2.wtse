@@ -11,10 +11,6 @@ get_code_list_rmdk(
 )
 }
 \arguments{
-\item{list_name}{}
-
-\item{clean_names}{}
-
 \item{list_file}{}
 }
 \description{

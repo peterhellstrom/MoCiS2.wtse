@@ -1,8 +1,8 @@
 #' Title
 #'
-#' @param sex 
+#' @param sex
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
@@ -19,33 +19,33 @@ pool_sex <- function(sex){
 #' @param analysdata
 #' @param add_bio_pars
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
 moc_join_SGU <- function(
-    biodata, 
-    analysdata, 
+    biodata,
+    analysdata,
     add_bio_pars = TRUE,
     codes_path = system.file("extdata", "codelist_wtse.xlsx", package = "MoCiS2.wtse")
 ){
-  
+
   bio_pool_data <- purrr::map_df(
-    unique(analysdata$PROV_KOD_ORIGINAL), 
+    unique(analysdata$PROV_KOD_ORIGINAL),
     unpool
-  ) |> 
+  ) |>
     dplyr::left_join(
-      biodata, 
+      biodata,
       dplyr::join_by(PROV_KOD_ORIGINAL)
-    ) |> 
+    ) |>
     dplyr::mutate(
       KON = dplyr::if_else(
-        stringr::str_detect(PROV_KOD_ORIGINAL_POOL, "-") & (KON %in% c("F", "M")), 
-        "X", 
+        stringr::str_detect(PROV_KOD_ORIGINAL_POOL, "-") & (KON %in% c("F", "M")),
+        "X",
         KON
       )
-    ) |> 
-    dplyr::group_by(PROV_KOD_ORIGINAL_POOL) |> 
+    ) |>
+    dplyr::group_by(PROV_KOD_ORIGINAL_POOL) |>
     dplyr::summarize(
       PROVTAG_DAT = min(PROVTAG_DAT),
       ANTAL_DAGAR = max(ANTAL_DAGAR),
@@ -54,74 +54,74 @@ moc_join_SGU <- function(
       ALDR = mean_or_na(ALDR),
       TOTV = mean_or_na(TOTV),
       TOTL = mean_or_na(TOTL)
-    ) |> 
+    ) |>
     dplyr::rename(
       PROV_KOD_ORIGINAL = PROV_KOD_ORIGINAL_POOL
     )
-  
+
   if (add_bio_pars){
-    
+
     kodlista <- readxl::read_excel(
-      codes_path, 
+      codes_path,
       sheet = "PARAMETRAR"
-    ) |> 
+    ) |>
       dplyr::select(
-        NRM_PARAMETERKOD, PARAMETERNAMN, UNIK_PARAMETERKOD, 
-        LABB, UTFOR_LABB, 
-        ENHET, 
-        PROV_BERED, PROVKARL, 
-        ANALYS_INSTR, ANALYS_MET, ACKREDITERAD_MET, 
+        NRM_PARAMETERKOD, PARAMETERNAMN, UNIK_PARAMETERKOD,
+        LABB, UTFOR_LABB,
+        ENHET,
+        PROV_BERED, PROVKARL,
+        ANALYS_INSTR, ANALYS_MET, ACKREDITERAD_MET,
         PROV_LAGR
-      ) |> 
+      ) |>
       # Note this step: ORGAN is hard-coded and assumed
       # to be "HELKROPP"
       dplyr::mutate(
         ORGAN = "HELKROPP"
       )
-    
-    bio_measurements <- bio_pool_data |> 
+
+    bio_measurements <- bio_pool_data |>
       dplyr::select(
         PROV_KOD_ORIGINAL, ALDR, TOTV, TOTL
-      ) |> 
+      ) |>
       tidyr::pivot_longer(
-        c("ALDR", "TOTV", "TOTL"), 
-        names_to = "NRM_PARAMETERKOD", 
+        c("ALDR", "TOTV", "TOTL"),
+        names_to = "NRM_PARAMETERKOD",
         values_to = "MATVARDETAL"
-      ) |> 
+      ) |>
       dplyr::mutate(
         MATVARDETAL = dplyr::if_else(
-          is.nan(MATVARDETAL), 
-          NA, 
+          is.nan(MATVARDETAL),
+          NA,
           MATVARDETAL
         ),
         NRM_PARAMETERKOD = dplyr::if_else(
-          stringr::str_detect(PROV_KOD_ORIGINAL, "-"), 
-          paste0(NRM_PARAMETERKOD, "H"), 
+          stringr::str_detect(PROV_KOD_ORIGINAL, "-"),
+          paste0(NRM_PARAMETERKOD, "H"),
           NRM_PARAMETERKOD
         )
-      ) |> 
-      dplyr::filter(!is.na(MATVARDETAL)) |> 
+      ) |>
+      dplyr::filter(!is.na(MATVARDETAL)) |>
       dplyr::left_join(
-        kodlista, 
+        kodlista,
         dplyr::join_by(NRM_PARAMETERKOD)
       )
-    
+
     data <- dplyr::bind_rows(
-      analysdata, 
+      analysdata,
       bio_measurements
-    ) |> 
-      dplyr::group_by(PROV_KOD_ORIGINAL) |> 
+    ) |>
+      dplyr::group_by(PROV_KOD_ORIGINAL) |>
       tidyr::fill(
-        PROVPLATS_ID, 
-        NAMN_PROVPLATS, 
-        ART, 
-        DYNTAXA_TAXON_ID, 
+        PROVPLATS_ID,
+        NAMN_PROVPLATS,
+        ART,
+        DYNTAXA_TAXON_ID,
         .direction = "downup"
-      ) |>  
+      ) |>
       dplyr::ungroup()
-    
+
     # Add species specific ORGAN for age-determination
-    data <- data |> 
+    data <- data |>
       dplyr::mutate(
         ORGAN = dplyr::if_else(
           stringr::str_sub(NRM_PARAMETERKOD, 1, 4) == "ALDR",
@@ -133,7 +133,7 @@ moc_join_SGU <- function(
           ORGAN
         ),
         ORGAN = dplyr::if_else(
-          (stringr::str_sub(NRM_PARAMETERKOD, 1, 4) == "TOTL") & (ART == "Blamussla"), 
+          (stringr::str_sub(NRM_PARAMETERKOD, 1, 4) == "TOTL") & (ART == "Blamussla"),
           "SKAL",
           ORGAN
         )
@@ -141,10 +141,10 @@ moc_join_SGU <- function(
   } else {
     data <- analysdata
   }
-  
-  data |> 
+
+  data |>
     dplyr::left_join(
-      bio_pool_data, 
+      bio_pool_data,
       dplyr::join_by(PROV_KOD_ORIGINAL)
     )
 }
@@ -157,26 +157,26 @@ moc_join_SGU <- function(
 #' @param template_path
 #' @param program
 #'
-#' @return
+#' @returns
 #' @export
 #'
 #' @examples
 moc_write_SGU <- function(
-    data, sheet, file = NULL, 
-    template_path = system.file("extdata", "miljogifter_leveransmall.xlsx", package = "MoCiS2.wtse"), 
+    data, sheet, file = NULL,
+    template_path = system.file("extdata", "miljogifter_leveransmall.xlsx", package = "MoCiS2.wtse"),
     program = "none",
     convert_to_character = TRUE,
     ...
 ){
-  
+
   # Avoid scientific notation
   options(scipen = 999)
-  
-  template <- readxl::read_excel(template_path, sheet, n_max = 1) |> 
+
+  template <- readxl::read_excel(template_path, sheet, n_max = 1) |>
     select(-1L)
-  
+
   if (program %in% c("hav", "limn"))
-    data <- data |> 
+    data <- data |>
     dplyr::mutate(
       PROVTAG_SYFTE = "NMO",
       PROVPLATS_TYP = "Bakgrund",
@@ -185,23 +185,23 @@ moc_write_SGU <- function(
       DIREKT_BEHA = "FRYST",
       PROVDATA_TYP = "BIOTA",
       PROVPLATS_MILJO = if_else(
-        program == "hav", 
-        "HAV-BRACKV", 
+        program == "hav",
+        "HAV-BRACKV",
         "SJO-SOTV-RINN"
       ),
       PLATTFORM = dplyr::if_else(
-        program == "hav", 
-        "FISKEBAT", 
+        program == "hav",
+        "FISKEBAT",
         "SMABAT"
       ),
       PLATTFORM = dplyr::if_else(
-        ART == "Blamussla", 
-        "SAKNAS", 
+        ART == "Blamussla",
+        "SAKNAS",
         PLATTFORM
       ),
       PLATTFORM = dplyr::if_else(
-        ART %in% c("Fisktarna", "Sillgrissla", "Strandskata"), 
-        "SAKNAS", 
+        ART %in% c("Fisktarna", "Sillgrissla", "Strandskata"),
+        "SAKNAS",
         PLATTFORM
       ),
       PROVTAG_MET = case_when(
@@ -211,34 +211,34 @@ moc_write_SGU <- function(
         TRUE ~ "Natfiske"
       ),
       PROVTAG_MET = dplyr::if_else(
-        ART %in% c("Fisktarna", "Sillgrissla", "Strandskata"), 
-        "Aggplockning", 
+        ART %in% c("Fisktarna", "Sillgrissla", "Strandskata"),
+        "Aggplockning",
         PROVTAG_MET
       ),
       MATOSAKERHET_TYP = dplyr::if_else(
-        is.na(MATOSAKERHET), 
-        NA, 
+        is.na(MATOSAKERHET),
+        NA,
         "U2"
       )
     )
-  
-  data <- data |> 
-    dplyr::arrange(PARAMETERNAMN) |> 
+
+  data <- data |>
+    dplyr::arrange(PARAMETERNAMN) |>
     dplyr::select(
       intersect(names(template), names(data))
-    ) |> 
+    ) |>
     dplyr::distinct()
-  
+
   data <- add_missing_columns(data, template)
-  
+
   if (convert_to_character) {
     data <- convert_cols_to_character(data)
   }
-  
+
   if (is.null(file)) {
     data
   } else {
     openxlsx2::write_xlsx(data, file = file, ...)
   }
-  
+
 }

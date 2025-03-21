@@ -7,8 +7,6 @@
 add_smnh_variable_names(.data, .cols = everything())
 }
 \arguments{
-\item{.data}{}
-
 \item{.cols}{}
 }
 \description{

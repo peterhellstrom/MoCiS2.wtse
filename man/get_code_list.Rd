@@ -13,12 +13,6 @@ get_code_list(
 )
 }
 \arguments{
-\item{list_name}{}
-
-\item{exclude_sheets}{}
-
-\item{clean_names}{}
-
 \item{current}{}
 }
 \description{

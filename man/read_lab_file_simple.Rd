@@ -7,8 +7,6 @@
 read_lab_file_simple(path, .has_provid = FALSE)
 }
 \arguments{
-\item{path}{}
-
 \item{.has_provid}{}
 }
 \description{
